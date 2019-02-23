@@ -14,7 +14,7 @@
 #CXX = g++
 #CXX = clang++
 
-EXE = EasyBook
+EXE = EasyBook.out
 
 SOURCES = main.cpp
 SOURCES += imgui/examples/imgui_impl_glfw.cpp 
@@ -23,6 +23,7 @@ SOURCES += imgui/imgui.cpp
 SOURCES += imgui/imgui_demo.cpp 
 SOURCES += imgui/imgui_draw.cpp 
 SOURCES += imgui/imgui_widgets.cpp
+SOURCES += $(wildcard view/*.cpp)
 
 OBJS = $(addsuffix .o, $(basename $(notdir $(SOURCES))))
 UNAME_S := $(shell uname -s)
@@ -33,7 +34,9 @@ UNAME_S := $(shell uname -s)
 
 ## Using OpenGL loader: gl3w [default]
 SOURCES += imgui/examples/libs/gl3w/GL/gl3w.c
-CXXFLAGS = -Iimgui/examples/libs/gl3w
+CXXFLAGS = -Iimgui/examples/libs/gl3w 
+CXXFLAGS += -I.
+CXXFLAGS += -g -std=c++14
 
 ## Using OpenGL loader: glew
 ## (This assumes a system-wide installation)
@@ -89,6 +92,10 @@ endif
 
 %.o:imgui/examples/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+%.o:view/%.cpp
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
 
 %.o:imgui/examples/libs/gl3w/GL/%.c
 # %.o:../libs/glad/src/%.c
